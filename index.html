@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paandavas Guild - Rise of the Legendary Warriors</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --primary-gold: #FFD700;
+            --primary-orange: #FF6B00;
+            --secondary-gold: #FFA500;
+            --dark-bg: #0a0a0a;
+            --card-bg: rgba(26, 26, 46, 0.9);
+            --text-light: #ffffff;
+            --text-gold: #FFD700;
+        }
+        
+        html { scroll-behavior: smooth; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: var(--text-light);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        /* Advanced 3D Background with Particles */
+        .particle-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: radial-gradient(ellipse at center, rgba(255, 215, 0, 0.1) 0%, transparent 70%),
+                        linear-gradient(45deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+        }
+        
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--primary-gold);
+            border-radius: 50%;
+            animation: float 3s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.5; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+        }
+        
+        /* Advanced Glassmorphism Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(26, 26, 46, 0.25);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+        
+        header.scrolled {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(30px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .logo {
+            font-size: 2.2rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--primary-gold), var(--primary-orange), var(--secondary-gold));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            animation: logoGlow 3s ease-in-out infinite alternate;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo:hover { transform: scale(1.1); }
+        
+        @keyframes logoGlow {
+            from { filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5)); }
+            to { filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8)); }
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+        
+        .nav-menu a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 600;
+            position: relative;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            transition: all 0.4s ease;
+            background: linear-gradient(45deg, transparent, transparent);
+        }
+        
+        .nav-menu a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 25px;
+            background: linear-gradient(45deg, var(--primary-gold), var(--primary-orange));
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+        }
+        
+        .nav-menu a:hover::before { opacity: 1; }
+        .nav-menu a:hover { color: #000; transform: translateY(-3px); }
+        
+        /* Epic Hero Section with 3D Effects */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: linear-gradient(135deg, rgba(0,0,0,0.8), rgba(255,215,0,0.1));
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 25% 25%, rgba(255, 215, 0, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(255, 107, 0, 0.2) 0%, transparent 50%);
+            animation: heroRotate 20s linear infinite;
+        }
+        
+        @keyframes heroRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            max-width: 1000px;
+            padding: 0 2rem;
+        }
+        
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 8rem);
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, var(--primary-gold), var(--primary-orange), var(--secondary-gold), var(--primary-gold));
+            background-size: 300% 300%;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 4s ease-in-out infinite, titleFloat 6s ease-in-out infinite;
+            text-shadow: 0 0 50px rgba(255, 215, 0, 0.5);
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        @keyframes titleFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out 0.5s both;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 0.9; transform: translateY(0); }
+        }
+        
+        /* Premium CTA Button with Advanced Effects */
+        .cta-button {
+            background: linear-gradient(45deg, var(--primary-orange), var(--primary-gold));
+            color: #000;
+            padding: 1.5rem 3rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: 800;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+            animation: fadeInUp 1s ease-out 1s both;
+        }
+        
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+        
+        .cta-button:hover::before { left: 100%; }
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 20px 50px rgba(255, 215, 0, 0.6);
+        }
+        
+        /* Advanced Card System with 3D Transforms */
+        .section {
+            padding: 8rem 0;
+            position: relative;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .section-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(45deg, var(--primary-gold), var(--primary-orange));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(45deg, var(--primary-gold), var(--primary-orange));
+            border-radius: 2px;
+        }
+        
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+        
+        .card {
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.9), rgba(16, 33, 62, 0.9));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 20px;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            cursor: pointer;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255, 215, 0, 0.1), rgba(255, 107, 0, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .card:hover::before { opacity: 1; }
+        .card:hover {
+            transform: translateY(-15px) rotateX(5deg) rotateY(5deg);
+            box-shadow: 0 30px 60px rgba(255, 215, 0, 0.3);
+            border-color: var(--primary-gold);
+        }
+        
+        .card-icon {
+            font-size: 3rem;
+            color: var(--primary-gold);
+            margin-bottom: 1.5rem;
+            display: block;
+            animation: iconPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes iconPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .card h3 {
+            font-size: 1.8rem;
+            color: var(--primary-gold);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .card p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            opacity: 0.9;
+        }
+        
+        /* Premium Warrior Cards with Advanced 3D Effects */
+        .warriors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+        
+        .warrior-card {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(26, 26, 46, 0.9));
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .warrior-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--primary-gold), var(--primary-orange), var(--secondary-gold), var(--primary-gold));
+            background-size: 300% 300%;
+            border-radius: 25px;
+            z-index: -1;
+            animation: borderGlow 4s ease-in-out infinite;
+            opacity: 0;
+        }
+        
+        .warrior-card:hover::before { opacity: 1; }
+        
+        @keyframes borderGlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .warrior-card:hover {
+            transform: translateY(-20px) scale(1.05);
+            box-shadow: 0 40px 80px rgba(255, 215, 0, 0.4);
+        }
+        
+        .warrior-avatar {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(45deg, var(--primary-gold), var(--primary-orange));
+            border-radius: 50%;
+            margin: 0 auto 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 900;
+            color: #000;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5);
+        }
+        
+        .warrior-avatar::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: rotate(45deg);
+            animation: avatarShine 3s linear infinite;
+        }
+        
+        @keyframes avatarShine {
+            0% { transform: rotate(45deg) translateX(-100%); }
+            100% { transform: rotate(45deg) translateX(100%); }
+        }
+        
+        .warrior-name {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-gold);
+            margin-bottom: 0.5rem;
+        }
+        
+        .warrior-title {
+            font-size: 1.2rem;
+            color: var(--secondary-gold);
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+        
+        .warrior-role {
+            font-size: 1rem;
+            opacity: 0.8;
+            background: rgba(255, 215, 0, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 15px;
+            display: inline-block;
+        }
+        
+        /* Advanced Join Section */
+        .join-section {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 107, 0, 0.1));
+            position: relative;
+        }
+        
+        .requirements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+        
+        .requirement-card {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 15px;
+            border-left: 5px solid var(--primary-gold);
+            transition: all 0.3s ease;
+        }
+        
+        .requirement-card:hover {
+            transform: translateX(10px);
+            background: rgba(255, 215, 0, 0.1);
+        }
+        
+        .requirement-card h4 {
+            color: var(--primary-gold);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* Premium Form Design */
+        .application-form {
+            max-width: 600px;
+            margin: 4rem auto;
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.95), rgba(16, 33, 62, 0.95));
+            backdrop-filter: blur(30px);
+            padding: 3rem;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        
+        .form-group {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.8rem;
+            color: var(--primary-gold);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 1.2rem;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.7);
+            color: var(--text-light);
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 1.5rem;
+            background: linear-gradient(45deg, var(--primary-gold), var(--primary-orange));
+            color: #000;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.3rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.5);
+        }
+        
+        /* Statistics Section */
+        .stats-section {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 6rem 0;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            text-align: center;
+        }
+        
+        .stat-item {
+            padding: 2rem;
+        }
+        
+        .stat-number {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--primary-gold), var(--primary-orange));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-label {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+        
+        /* Premium Footer */
+        footer {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(26, 26, 46, 0.95));
+            backdrop-filter: blur(20px);
+            padding: 4rem 0 2rem;
+            border-top: 1px solid rgba(255, 215, 0, 0.3);
+            position: relative;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-section h3 {
+            color: var(--primary-gold);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-section p,
+        .footer-section a {
+            color: var(--text-light);
+            text-decoration: none;
+            margin-bottom: 0.8rem;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-section a:hover {
+            color: var(--primary-gold);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-links a {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, var(--primary-gold), var(--primary-orange));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.5);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 215, 0, 0.2);
+            color: var(--text-light);
+            opacity: 0.8;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-menu { display: none; }
+            .hero-title { font-size: 3rem; }
+            .cards-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .warriors-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .application-form { margin: 2rem 1rem; padding: 2rem; }
+        }
+        
+        /* Scroll Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Loading Animation */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--dark-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        
+        .loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(255, 215, 0, 0.3);
+            border-top: 3px solid var(--primary-gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loader" id="loader">
+        <div class="spinner"></div>
+    </div>
+    
+    <!-- Particle Background -->
+    <div class="particle-bg" id="particle-bg"></div>
+    
+    <!-- Header -->
+    <header id="header">
+        <nav>
+            <div class="logo">
+                <i class="fas fa-crown"></i> PAANDAVAS
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#about"><i class="fas fa-shield-alt"></i> About</a></li>
+                <li><a href="#warriors"><i class="fas fa-users"></i> Warriors</a></li>
+                <li><a href="#stats"><i class="fas fa-chart-line"></i> Stats</a></li>
+                <li><a href="#join"><i class="fas fa-user-plus"></i> Join</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">PAANDAVAS</h1>
+            <p class="hero-subtitle">
+                Rise from the Sacred Flames of Kurukshetra<br>
+                Unite with the Legendary Warriors in Free Fire's Ultimate Battle Arena
+            </p>
+            <a href="#join" class="cta-button">
+                <i class="fas fa-sword"></i> JOIN THE BROTHERHOOD
+            </a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="container">
+            <h2 class="section-title fade-in">The Sacred Legacy</h2>
+            <div class="cards-grid">
+                <div class="card fade-in">
+                    <i class="fas fa-trophy card-icon"></i>
+                    <h3>Legendary Victories</h3>
+                    <p>Champions of countless battles, masters of strategy and valor. Our guild stands among the elite, carrying forward the undefeated spirit of the Pandavas through every Free Fire tournament and ranked match.</p>
+                </div>
+                <div class="card fade-in">
+                    <i class="fas fa-chess card-icon"></i>
+                    <h3>Strategic Mastery</h3>
+                    <p>Like the great strategists of Mahabharata, we combine ancient wisdom with modern tactics. Every battle is planned, every move calculated, every victory earned through superior teamwork and tactical brilliance.</p>
+                </div>
+                <div class="card fade-in">
+                    <i class="fas fa-heart card-icon"></i>
+                    <h3>Unbreakable Bond</h3>
+                    <p>More than warriors, we are brothers bound by honor and loyalty. The sacred bond of the Pandavas lives within our guild - supporting each other, sharing knowledge, and rising together as one unstoppable force.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Warriors Section -->
+    <section id="warriors" class="section">
+        <div class="container">
+            <h2 class="section-title fade-in">The Sacred Five</h2>
+            <p style="text-align: center; font-size: 1.3rem; margin-bottom: 3rem; opacity: 0.9;" class="fade-in">
+                Meet the legendary core who embody the eternal spirit of righteousness and valor
+            </p>
+            
+            <div class="warriors-grid">
+                <div class="warrior-card fade-in">
+                    <div class="warrior-avatar">A</div>
+                    <h3 class="warrior-name">Arjuna</h3>
+                    <p class="warrior-title">The Divine Archer</p>
+                    <p class="warrior-role">Guild Master | Precision Sniper</p>
+                </div>
+                <div class="warrior-card fade-in">
+                    <div class="warrior-avatar">K</div>
+                    <h3 class="warrior-name">Karna</h3>
+                    <p class="warrior-title">The Generous Warrior</p>
+                    <p class="warrior-role">Co-Leader | Assault Specialist</p>
+                </div>
+                <div class="warrior-card fade-in">
+                    <div class="warrior-avatar">B</div>
+                    <h3 class="warrior-name">Bhima</h3>
+                    <p class="warrior-title">The Mighty Thunder</p>
+                    <p class="warrior-role">Officer | Heavy Weapons Expert</p>
+                </div>
+                <div class="warrior-card fade-in">
+                    <div class="warrior-avatar">Y</div>
+                    <h3 class="warrior-name">Yudhishthira</h3>
+                    <p class="warrior-title">The Righteous King</p>
+                    <p class="warrior-role">Strategist | Team Captain</p>
+                </div>
+                <div class="warrior-card fade-in">
+                    <div class="warrior-avatar">N</div>
+                    <h3 class="warrior-name">Nakula</h3>
+                    <p class="warrior-title">The Swift Blade</p>
+                    <p class="warrior-role">Scout | Speed Specialist</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section id="stats" class="stats-section">
+        <div class="container">
+            <h2 class="section-title fade-in">Guild Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-item fade-in">
+                    <span class="stat-number" data-target="147">0</span>
+                    <span class="stat-label">Victories</span>
+                </div>
+                <div class="stat-item fade-in">
+                    <span class="stat-number" data-target="50">0</span>
+                    <span class="stat-label">Active Members</span>
+                </div>
+                <div class="stat-item fade-in">
+                    <span class="stat-number" data-target="23">0</span>
+                    <span class="stat-label">Tournaments Won</span>
+                </div>
+                <div class="stat-item fade-in">
+                    <span class="stat-number" data-target="96">0</span>
+                    <span class="stat-label">Win Rate %</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Join Section -->
+    <section id="join" class="section join-section">
+        <div class="container">
+            <h2 class="section-title fade-in">Join Our Sacred Brotherhood</h2>
+            <p style="text-align: center; font-size: 1.4rem; margin-bottom: 3rem;" class="fade-in">
+                Do you possess the honor, skill, and determination to fight alongside the legendary Paandavas?<br>
+                Rise and claim your destiny in the ultimate Free Fire guild!
+            </p>
+            
+            <div class="requirements-grid fade-in">
+                <div class="requirement-card">
+                    <h4><i class="fas fa-medal"></i> Rank Requirement</h4>
+                    <p>Gold III+ Rank in Ranked Mode</p>
+                    <p style="font-size: 0.9rem; opacity: 0.7;">Prove your battlefield prowess</p>
+                </div>
+                <div class="requirement-card">
+                    <h4><i class="fas fa-clock"></i> Activity Level</h4>
+                    <p>Daily Active Player (4+ hours)</p>
+                    <p style="font-size: 0.9rem; opacity: 0.7;">Commitment to the brotherhood</p>
+                </div>
+                <div class="requirement-card">
+                    <h4><i class="fas fa-microphone"></i> Communication</h4>
+                    <p>Discord + Voice Chat Ready</p>
+                    <p style="font-size: 0.9rem; opacity: 0.7;">Coordinate like true warriors</p>
+                </div>
+                <div class="requirement-card">
+                    <h4><i class="fas fa-handshake"></i> Honor Code</h4>
+                    <p>Respectful & Team-Oriented</p>
+                    <p style="font-size: 0.9rem; opacity: 0.7;">Uphold Pandava values</p>
+                </div>
+            </div>
+            
+            <div class="application-form fade-in">
+                <h3 style="text-align: center; margin-bottom: 2rem; color: var(--primary-gold); font-size: 2rem;">
+                    <i class="fas fa-scroll"></i> Sacred Application
+                </h3>
+                <form id="applicationForm">
+                    <div class="form-group">
+                        <label for="ign"><i class="fas fa-user"></i> In-Game Name (IGN):</label>
+                        <input type="text" id="ign" name="ign" required placeholder="Enter your Free Fire IGN">
+                    </div>
+                    <div class="form-group">
+                        <label for="uid"><i class="fas fa-id-card"></i> Player UID:</label>
+                        <input type="text" id="uid" name="uid" required placeholder="Your unique player ID">
+                    </div>
+                    <div class="form-group">
+                        <label for="rank"><i class="fas fa-trophy"></i> Current Rank:</label>
+                        <select id="rank" name="rank" required>
+                            <option value="">Select your rank</option>
+                            <option value="bronze">Bronze</option>
+                            <option value="silver">Silver</option>
+                            <option value="gold">Gold</option>
+                            <option value="platinum">Platinum</option>
+                            <option value="diamond">Diamond</option>
+                            <option value="master">Master</option>
+                            <option value="grandmaster">Grand Master</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="kd"><i class="fas fa-crosshairs"></i> K/D Ratio:</label>
+                        <input type="text" id="kd" name="kd" placeholder="e.g., 2.5">
+                    </div>
+                    <div class="form-group">
+                        <label for="discord"><i class="fab fa-discord"></i> Discord ID:</label>
+                        <input type="text" id="discord" name="discord" placeholder="YourName#1234">
+                    </div>
+                    <div class="form-group">
+                        <label for="playtime"><i class="fas fa-clock"></i> Daily Playtime:</label>
+                        <select id="playtime" name="playtime" required>
+                            <option value="">Select playtime</option>
+                            <option value="2-4 hours">2-4 hours</option>
+                            <option value="4-6 hours">4-6 hours</option>
+                            <option value="6+ hours">6+ hours</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="experience"><i class="fas fa-gamepad"></i> Gaming Experience:</label>
+                        <textarea id="experience" name="experience" rows="4" placeholder="Tell us about your Free Fire journey, achievements, and gaming experience..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="motivation"><i class="fas fa-fire"></i> Why Join Paandavas?</label>
+                        <textarea id="motivation" name="motivation" rows="4" placeholder="What draws you to our guild? How will you contribute to our brotherhood?"></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-sword"></i> SUBMIT SACRED OATH
+                    </button>
+                </form>
+            </div>
+            
+            <div style="margin-top: 4rem; text-align: center;" class="fade-in">
+                <h3 style="color: var(--primary-gold); margin-bottom: 2rem; font-size: 1.8rem;">
+                    <i class="fas fa-address-book"></i> Guild Contact Information
+                </h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; max-width: 800px; margin: 0 auto;">
+                    <div style="background: rgba(0,0,0,0.6); padding: 2rem; border-radius: 15px; border: 1px solid rgba(255,215,0,0.3);">
+                        <h4 style="color: var(--primary-gold); margin-bottom: 1rem;"><i class="fas fa-users"></i> Guild ID</h4>
+                        <p style="font-size: 1.2rem; font-weight: bold;">[Your Guild ID]</p>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.6); padding: 2rem; border-radius: 15px; border: 1px solid rgba(255,215,0,0.3);">
+                        <h4 style="color: var(--primary-gold); margin-bottom: 1rem;"><i class="fab fa-discord"></i> Discord</h4>
+                        <p style="font-size: 1.2rem; font-weight: bold;">[Discord Server Link]</p>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.6); padding: 2rem; border-radius: 15px; border: 1px solid rgba(255,215,0,0.3);">
+                        <h4 style="color: var(--primary-gold); margin-bottom: 1rem;"><i class="fas fa-crown"></i> Leader</h4>
+                        <p style="font-size: 1.2rem; font-weight: bold;">[Leader IGN/Contact]</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-crown"></i> Paandavas Guild</h3>
+                    <p>The legendary Free Fire guild inspired by the sacred warriors of Mahabharata. We embody honor, valor, and unbreakable brotherhood in every battle.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-discord"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3><i class="fas fa-gamepad"></i> Quick Links</h3>
+                    <a href="#about">About Guild</a>
+                    <a href="#warriors">Our Warriors</a>
+                    <a href="#stats">Statistics</a>
+                    <a href="#join">Join Application</a>
+                </div>
+                <div class="footer-section">
+                    <h3><i class="fas fa-trophy"></i> Achievements</h3>
+                    <p>🏆 Server Champions 2024</p>
+                    <p>⚔️ 23 Tournament Victories</p>
+                    <p>🎯 96% Win Rate</p>
+                    <p>👑 Elite Guild Status</p>
+                </div>
+                <div class="footer-section">
+                    <h3><i class="fas fa-scroll"></i> Guild Code</h3>
+                    <p>"धर्मे च अर्थे च कामे च मोक्षे च"</p>
+                    <p style="font-style: italic; opacity: 0.8;">
+                        In righteousness, prosperity, desire, and liberation - we stand united as the eternal Paandavas.
+                    </p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Paandavas Guild - Free Fire. All rights reserved.</p>
+                <p style="margin-top: 0.5rem; opacity: 0.7;">
+                    "Victory belongs to the most righteous" - Ancient Wisdom of Kurukshetra
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Advanced Loading Animation
+        window.addEventListener('load', function() {
+            const loader = document.getElementById('loader');
+            loader.classList.add('hidden');
+            setTimeout(() => {
+                loader.style.display = 'none';
+            }, 500);
+            
+            // Initialize particles after loading
+            createParticles();
+            
+            // Start counter animations
+            animateCounters();
+        });
+
+        // Create Dynamic Particles
+        function createParticles() {
+            const particleBg = document.getElementById('particle-bg');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 3 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                particleBg.appendChild(particle);
+            }
+        }
+
+        // Header Scroll Effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            
+            // Fade in animations
+            const fadeElements = document.querySelectorAll('.fade-in');
+            fadeElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('visible');
+                }
+            });
+        });
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Counter Animation
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-number');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const counter = entry.target;
+                        const target = parseInt(counter.getAttribute('data-target'));
+                        let current = 0;
+                        const increment = target / 100;
+                        const timer = setInterval(() => {
+                            current += increment;
+                            if (current >= target) {
+                                counter.textContent = target;
+                                clearInterval(timer);
+                            } else {
+                                counter.textContent = Math.floor(current);
+                            }
+                        }, 20);
+                        observer.unobserve(counter);
+                    }
+                });
+            });
+            
+            counters.forEach(counter => {
+                observer.observe(counter);
+            });
+        }
+
+        // Enhanced Form Submission
+        document.getElementById('applicationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // Validate required fields
+            if (!data.ign || !data.uid || !data.rank || !data.playtime) {
+                showNotification('Please fill in all required fields!', 'error');
+                return;
+            }
+            
+            // Show success animation
+            showNotification('Sacred oath submitted successfully! Our guild masters will review your application and contact you soon. Welcome to the brotherhood, warrior!', 'success');
+            
+            // Reset form
+            this.reset();
+        });
+
+        // Notification System
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? 'linear-gradient(45deg, #4CAF50, #45a049)' : 'linear-gradient(45deg, #f44336, #da190b)'};
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 10px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                z-index: 10000;
+                font-weight: 600;
+                max-width: 400px;
+                animation: slideIn 0.5s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.5s ease';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 500);
+            }, 5000);
+        }
+
+        // Add slide animations CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Advanced 3D Card Effects
+        document.querySelectorAll('.card, .warrior-card').forEach(card => {
+            card.addEventListener('mousemove', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+                
+                this.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
+            });
+        });
+
+        // Initialize fade-in animations on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            fadeElements.forEach((element, index) => {
+                setTimeout(() => {
+                    if (element.getBoundingClientRect().top < window.innerHeight) {
+                        element.classList.add('visible');
+                    }
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>
